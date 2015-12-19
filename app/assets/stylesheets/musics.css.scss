@@ -1,0 +1,20 @@
+// Place all the styles related to the Musics controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.music {
+padding: 4em;
+}
+
+.big {
+font-size: 8em !important;
+}
+
+.music_item {
+height: 200px;
+width: 200px;
+background-color: #bbb;
+padding: 2em;
+margin: 1em;
+display: inline-block;
+}
