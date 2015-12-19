@@ -8,9 +8,16 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="#">Kiddo Music</a>
+	  {{ playing }}
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right controls">
+
+	    <li>
+	      <video controls height="50" width="200" id="html5_player">
+		<source src="/music/01.mp3">
+	      </video>
+	    </li>
 
 	    <li>
 	      <span id="player"></span>
