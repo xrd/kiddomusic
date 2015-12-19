@@ -26,15 +26,20 @@
                         ).success ( data, status, headers ) ->
                                 $scope.pictures = data.items
 
+        $scope.playing = false
         $scope.toggle = () ->
-                $scope.play()
+                $scope.playing = !$scope.playing
+                unless $scope.playing
+                        $scope.stop()
+                else
+                        $scope.play()
 
         $scope.getBgImage = (index) ->
                 rv = {}
                 if $scope.pictures and $scope.pictures[index]
                         url = $scope.pictures[index].media.m 
                         console.log "URL: #{url}"
-                        rv = { 'background-image' : 'url( ' + url + ')' }
+                        rv = { 'background-image' : 'url( ' + url + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover' }
                 rv
 
         $scope.init = () ->
