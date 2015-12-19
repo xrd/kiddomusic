@@ -4,7 +4,16 @@ class MusicsController < ApplicationController
   # GET /musics
   # GET /musics.json
   def index
-    @musics = Music.all
+    # @musics = Music.all
+    
+    @musics = []
+    100.times do |i|
+      @musics << { name: Faker::Company.name() }
+    end
+    respond_to do |f|
+      f.html {}
+      f.json { render json: @musics }
+    end
   end
 
   # GET /musics/1
