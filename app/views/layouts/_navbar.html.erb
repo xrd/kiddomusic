@@ -1,34 +1,19 @@
+<video controls height="0" width="0" id="html5_player">
+  <source src="/music/01.mp3">
+</video>
+
 <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Kiddo Music</a>
-	  {{ playing }}
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
+        <div id="navbar">
           <ul class="nav navbar-nav navbar-right controls">
-
-	    <li>
-	      <video controls height="0" width="0" id="html5_player">
-		<source src="/music/01.mp3">
-	      </video>
-	    </li>
-
-	    <li>
-	      <span id="player"></span>
-	    </li>
-
-            <li><a class="big" ng-click="play()">
+            <li>
+	      <a class="big" ng-click="play()">
 		<span class="glyphicon glyphicon-play-circle"></span>
-	    </a></li>
-            <li><a class="big" ng-click="stop()">
+	      </a>
+	      <a class="big" ng-click="stop()">
 		<span class="glyphicon glyphicon-stop"></span>
-	    </a></li>
+	      </a>
+	    </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
