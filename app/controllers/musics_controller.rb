@@ -1,6 +1,18 @@
 class MusicsController < ApplicationController
   before_action :set_music, only: [:show, :edit, :update, :destroy]
 
+  def thumbnails
+    url =  "https://#{ENV['LIVE_AUTH_INFORMATION']}@api.datamarket.azure.com/Bing/Search/Image?Query=%27animals%27&Adult=%27Moderate%27&$format=JSON"
+    conn = Faraday.new(:url => url ) do |faraday|
+      faraday.request  :url_encoded             # form-encode POST params
+      faraday.response :logger                  # log requests to STDOUT
+      faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+    end
+    
+    response = conn.get
+    render json: JSON.parse( response.body )
+  end
+
   # GET /musics
   # GET /musics.json
   def index
