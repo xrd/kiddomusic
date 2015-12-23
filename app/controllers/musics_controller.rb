@@ -17,10 +17,12 @@ class MusicsController < ApplicationController
   # GET /musics.json
   def index
     # @musics = Music.all
-    
     @musics = []
-    100.times do |i|
-      @musics << { name: Faker::Company.name() }
+
+    Dir.foreach( File.join( "public", "songs" ) ) do |f|
+      unless f =~ /^\.\.?$/
+        @musics << { name: f, src: "/songs/#{f}" }
+      end
     end
     respond_to do |f|
       f.html {}

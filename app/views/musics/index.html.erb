@@ -1,4 +1,4 @@
-<span class="song" ng-repeat="song in songs" ng-click="toggle()">
+<span class="song" ng-repeat="song in songs" ng-click="toggle(song)">
 <div class="something" ng-style="getBgImage($index)">
 </div>
 <span class="name"> {{ song.name }} </span>

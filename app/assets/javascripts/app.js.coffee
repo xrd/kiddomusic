@@ -28,12 +28,12 @@
                                 $scope.pictures = data.d.results
 
         $scope.playing = false
-        $scope.toggle = () ->
+        $scope.toggle = ( song ) ->
                 $scope.playing = !$scope.playing
                 unless $scope.playing
                         $scope.stop()
                 else
-                        $scope.play()
+                        $scope.play( song )
 
         $scope.getBgImage = (index) ->
                 rv = {}
@@ -54,7 +54,8 @@
         $scope.stop = () ->
                 $scope.player.pause()
 
-        $scope.play = () ->
+        $scope.play = ( song ) ->
+                $scope.player.src = song.src
                 $scope.player.play()
                 # $scope.html5_player.play()
                 # $scope.player.play()
