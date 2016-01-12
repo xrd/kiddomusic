@@ -35,20 +35,28 @@
                 else
                         $scope.play( song )
 
-        $scope.getBgImage = (index) ->
-                rv = {}
+        $scope.getThumbnail = (index) ->
+                # rv = {}
+                url = undefined
                 mod_index = index % $scope.songs.length
                 console.log "Mod index: #{mod_index}"
                 if $scope.pictures and $scope.pictures[mod_index]
                         url = $scope.pictures[mod_index].Thumbnail.MediaUrl
-                        console.log "URL: #{url}"
-                        rv = { 'background-image' : 'url( ' + url + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover' }
+                        #console.log "URL: #{url}"
+                        #rv = { 'background-image' : 'url( ' + url + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover' }
+                # rv
+                url
+
+        $scope.getBgImage = (song) ->
+                rv = {}
+                url = song.thumbnail
+                rv = { 'background-image' : 'url( ' + url + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover' }
                 rv
 
         $scope.init = () ->
                 $scope.player = $('#html5_player')[0]
                 $scope.loadSongs()
-                $scope.loadPictures()
+                # $scope.loadPictures()
                 
 
         $scope.stop = () ->

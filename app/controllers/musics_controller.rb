@@ -1,3 +1,5 @@
+require 'uri'
+
 class MusicsController < ApplicationController
   before_action :set_music, only: [:show, :edit, :update, :destroy]
 
@@ -18,10 +20,12 @@ class MusicsController < ApplicationController
   def index
     # @musics = Music.all
     @musics = []
-
-    Dir.foreach( File.join( "public", "songs" ) ) do |f|
+    root = File.join( "public", "songs" ) 
+    Dir.foreach( root ) do |f|
       unless f =~ /^\.\.?$/
-        @musics << { name: f, src: "/songs/#{f}" }
+        Mp3Info.open( File.join( root, f ) ) do |mp3|
+          @musics << { name: f, src: "/songs/#{f}", title: mp3.tag.title, thumbnail: Song.thumbnail( mp3.tag.title ) }
+        end
       end
     end
     respond_to do |f|
