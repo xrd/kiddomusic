@@ -20,38 +20,50 @@
 
         $scope.loadPictures = () ->
                 $http(
-                        url: 'http://www.flickr.com/services/oembed/?url=http%3A//flickr.com/photos/bees/2362225867/&maxwidth=300&maxheight=400&jsoncallback=JSON_CALLBACK&format=json'
-                        url: 'http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=JSON_CALLBACK&format=json'
-                        method: "JSONP"
+                        url: '/musics/thumbnails'
+                        # url: 'http://www.flickr.com/services/oembed/?url=http%3A//flickr.com/photos/bees/2362225867/&maxwidth=300&maxheight=400&jsoncallback=JSON_CALLBACK&format=json'
+                        # url: 'http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=JSON_CALLBACK&format=json'
+                        method: "GET"
                         ).success ( data, status, headers ) ->
-                                $scope.pictures = data.items
+                                $scope.pictures = data.d.results
 
         $scope.playing = false
-        $scope.toggle = () ->
+        $scope.toggle = ( song ) ->
                 $scope.playing = !$scope.playing
                 unless $scope.playing
                         $scope.stop()
                 else
-                        $scope.play()
+                        $scope.play( song )
 
-        $scope.getBgImage = (index) ->
+        $scope.getThumbnail = (index) ->
+                # rv = {}
+                url = undefined
+                mod_index = index % $scope.songs.length
+                console.log "Mod index: #{mod_index}"
+                if $scope.pictures and $scope.pictures[mod_index]
+                        url = $scope.pictures[mod_index].Thumbnail.MediaUrl
+                        #console.log "URL: #{url}"
+                        #rv = { 'background-image' : 'url( ' + url + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover' }
+                # rv
+                url
+
+        $scope.getBgImage = (song) ->
                 rv = {}
-                if $scope.pictures and $scope.pictures[index]
-                        url = $scope.pictures[index].media.m 
-                        console.log "URL: #{url}"
-                        rv = { 'background-image' : 'url( ' + url + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover' }
+                url = song.thumbnail
+                rv = { 'background-image' : 'url( ' + url + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover' }
                 rv
 
         $scope.init = () ->
                 $scope.player = $('#html5_player')[0]
                 $scope.loadSongs()
-                $scope.loadPictures()
+                # $scope.loadPictures()
                 
 
         $scope.stop = () ->
                 $scope.player.pause()
 
-        $scope.play = () ->
+        $scope.play = ( song ) ->
+                $scope.player.src = song.src
                 $scope.player.play()
                 # $scope.html5_player.play()
                 # $scope.player.play()

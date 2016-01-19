@@ -1,14 +1,32 @@
+require 'uri'
+
 class MusicsController < ApplicationController
   before_action :set_music, only: [:show, :edit, :update, :destroy]
+
+  def thumbnails
+    url =  "https://#{ENV['LIVE_AUTH_INFORMATION']}@api.datamarket.azure.com/Bing/Search/Image?Query=%27animals%27&Adult=%27Moderate%27&$format=JSON"
+    conn = Faraday.new(:url => url ) do |faraday|
+      faraday.request  :url_encoded             # form-encode POST params
+      faraday.response :logger                  # log requests to STDOUT
+      faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+    end
+    
+    response = conn.get
+    render json: JSON.parse( response.body )
+  end
 
   # GET /musics
   # GET /musics.json
   def index
     # @musics = Music.all
-    
     @musics = []
-    100.times do |i|
-      @musics << { name: Faker::Company.name() }
+    root = File.join( "public", "songs" ) 
+    Dir.foreach( root ) do |f|
+      unless f =~ /^\.\.?$/
+        Mp3Info.open( File.join( root, f ) ) do |mp3|
+          @musics << { name: f, src: "/songs/#{f}", title: mp3.tag.title, thumbnail: Song.thumbnail( mp3.tag.title ) }
+        end
+      end
     end
     respond_to do |f|
       f.html {}
