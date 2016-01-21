@@ -27,7 +27,7 @@
                         ).success ( data, status, headers ) ->
                                 $scope.pictures = data.d.results
 
-        $scope.playing = false
+        $scope.playing = undefined # false
         $scope.toggle = ( song ) ->
                 $scope.playing = !$scope.playing
                 unless $scope.playing
@@ -63,11 +63,13 @@
                 $scope.player.pause()
 
         $scope.play = ( song ) ->
-                $scope.player.src = song.src
-                $scope.player.play()
-                # $scope.html5_player.play()
-                # $scope.player.play()
-                $scope.playing = "Playin jdavey..."
-                # alert( "Playing!!!" )
+                if $scope.selected == song
+                        $scope.stop()
+                        $scope.playing = undefined
+                else
+                        $scope.selected = song
+                        $scope.player.src = song.src
+                        $scope.player.play()
+                        $scope.playing = "Playing #{song.title}"
         
         ]
