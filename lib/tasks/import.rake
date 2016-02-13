@@ -34,5 +34,10 @@ namespace :import do
       puts "That file or directory does not exist (or you did not specify one with path=path/to/file)"
     end
   end
-	  
+end
+namespace :load do
+  desc "Load songs"
+  task :songs => :environment do
+    Song.slurp
+  end
 end

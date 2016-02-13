@@ -63,13 +63,23 @@
                 $scope.player.pause()
 
         $scope.play = ( song ) ->
-                if $scope.selected == song
-                        $scope.stop()
-                        $scope.playing = undefined
+                d = new Date()
+                currentTime = d.getTime()
+
+                console.log "Current: #{currentTime} vs last #{$scope.lastClicked}"
+
+                if currentTime < ( $scope.lastClicked + 2*1000 )
+                        console.log "Ignoring it..."
                 else
-                        $scope.selected = song
-                        $scope.player.src = song.src
-                        $scope.player.play()
-                        $scope.playing = "Playing #{song.title}"
+                        console.log "Time threshold exceeded, using this click"
+                        if $scope.selected == song
+                                $scope.stop()
+                                $scope.playing = undefined
+                        else
+                                $scope.selected = song
+                                $scope.player.src = song.src
+                                $scope.player.play()
+                                $scope.playing = "Playing #{song.title}"
+                $scope.lastClicked = currentTime
         
         ]

@@ -19,15 +19,8 @@ class MusicsController < ApplicationController
   # GET /musics.json
   def index
     # @musics = Music.all
-    @musics = []
-    root = File.join( "public", "songs" ) 
-    Dir.foreach( root ) do |f|
-      unless f =~ /^\.\.?$/
-        Mp3Info.open( File.join( root, f ) ) do |mp3|
-          @musics << { name: f, src: "/songs/#{f}", title: mp3.tag.title, thumbnail: Song.thumbnail( mp3.tag.title ) }
-        end
-      end
-    end
+    # @musics = []
+    @musics = Song.all
     respond_to do |f|
       f.html {}
       f.json { render json: @musics }
