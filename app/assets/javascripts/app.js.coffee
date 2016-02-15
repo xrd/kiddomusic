@@ -57,7 +57,6 @@
                 $scope.player = $('#html5_player')[0]
                 $scope.loadSongs()
                 # $scope.loadPictures()
-                
 
         $scope.stop = () ->
                 $scope.player.pause()
