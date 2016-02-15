@@ -27,7 +27,7 @@
                         ).success ( data, status, headers ) ->
                                 $scope.pictures = data.d.results
 
-        $scope.playing = false
+        $scope.playing = undefined # false
         $scope.toggle = ( song ) ->
                 $scope.playing = !$scope.playing
                 unless $scope.playing
@@ -57,17 +57,28 @@
                 $scope.player = $('#html5_player')[0]
                 $scope.loadSongs()
                 # $scope.loadPictures()
-                
 
         $scope.stop = () ->
                 $scope.player.pause()
 
         $scope.play = ( song ) ->
-                $scope.player.src = song.src
-                $scope.player.play()
-                # $scope.html5_player.play()
-                # $scope.player.play()
-                $scope.playing = "Playin jdavey..."
-                # alert( "Playing!!!" )
+                d = new Date()
+                currentTime = d.getTime()
+
+                console.log "Current: #{currentTime} vs last #{$scope.lastClicked}"
+
+                if currentTime < ( $scope.lastClicked + 2*1000 )
+                        console.log "Ignoring it..."
+                else
+                        console.log "Time threshold exceeded, using this click"
+                        if $scope.selected == song
+                                $scope.stop()
+                                $scope.playing = undefined
+                        else
+                                $scope.selected = song
+                                $scope.player.src = song.src
+                                $scope.player.play()
+                                $scope.playing = "Playing #{song.title}"
+                $scope.lastClicked = currentTime
         
         ]

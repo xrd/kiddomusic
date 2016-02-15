@@ -11,6 +11,7 @@ def process_song( path )
   basename = File.basename( path )
   # fix it
   fixed = basename.gsub( /\s/, '_' ).gsub( /[^a-zA-Z0-9\.]/, '_' )
+  puts "Importing #{fixed}"
   File.symlink( path, File.join( "public", "songs", fixed ) )
   # Import it into the database
   # Do this later.
@@ -20,7 +21,11 @@ end
 namespace :import do
   desc "Import songs"
   task :songs => :environment do
-    path = ENV['path']
+    path = ENV['path'].dup
+    puts "Before: #{path}"
+    # puts path.split( " " ).join "\n"
+    path.gsub!( /\\/, "" )
+    puts "After: #{path}"
     if Dir.exists? path
       process_directory( path )
     elsif File.exists? path
@@ -29,5 +34,10 @@ namespace :import do
       puts "That file or directory does not exist (or you did not specify one with path=path/to/file)"
     end
   end
-	  
+end
+namespace :load do
+  desc "Load songs"
+  task :songs => :environment do
+    Song.slurp
+  end
 end
