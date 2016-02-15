@@ -9,6 +9,11 @@
           </button>
           <!-- a class="navbar-brand" href="#">Kiddo Music</a -->
 	  <h4>{{ playing }}</h4>
+
+          <li><a class="big" ng-show="notes.opacity" ng-style=" { 'opacity': notes.opacity, 'top': notes.positions[0] + 'px', 'left': notes.positions[1] + 'px', position: 'absolute' }" >
+	      <span class="glyphicon glyphicon-music"></span>
+	  </a></li>
+
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right controls">

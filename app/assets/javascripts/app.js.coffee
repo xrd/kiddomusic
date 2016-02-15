@@ -12,7 +12,7 @@
                 }
         ]
 
-@mod.controller 'MusicCtrl', [ '$scope', 'MusicRsrc', '$http', ( $scope, MusicRsrc, $http ) ->
+@mod.controller 'MusicCtrl', [ '$scope', 'MusicRsrc', '$http', '$timeout', ( $scope, MusicRsrc, $http , $timeout ) ->
 
         $scope.loadSongs = () ->
                 MusicRsrc.index {}, (response) ->
@@ -56,14 +56,38 @@
         $scope.init = () ->
                 $scope.player = $('#html5_player')[0]
                 $scope.loadSongs()
+                $scope.initNotes()
                 # $scope.loadPictures()
+
+        $scope.initNotes = () ->
+                $scope.notes = {}
+                $scope.notes.positions = [30,30]
+                $scope.notes.opacity = 0
 
         $scope.stop = () ->
                 $scope.player.pause()
 
+        $scope.enableNotes = () ->
+                $scope.initNotes()
+                $scope.notes.opacity = 1
+                $scope.animateNotes()
+
+        $scope.animateNotes = () ->
+                if $scope.notes.opacity > 0
+                        console.log "Animating: #{$scope.notes.positions} vs #{$scope.notes.opacity}"
+                        $scope.notes.opacity -= 0.05
+                        $scope.notes.positions[0] += parseInt( Math.random() * 10 )
+                        $scope.notes.positions[1] += parseInt( Math.random() * 10 )
+                        $timeout ( () -> $scope.animateNotes() ), 200
+                else
+                        $scope.initNotes()
+
+
         $scope.play = ( song ) ->
                 d = new Date()
                 currentTime = d.getTime()
+
+                $scope.enableNotes()
 
                 console.log "Current: #{currentTime} vs last #{$scope.lastClicked}"
 
