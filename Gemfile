@@ -41,3 +41,4 @@ gem 'spring',        group: :development
 gem "faker"
 gem "faraday"
 gem "mp3info"
+gem "rspec-rails"
