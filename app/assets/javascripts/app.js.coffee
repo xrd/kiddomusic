@@ -59,37 +59,47 @@
                 $scope.initNotes()
                 # $scope.loadPictures()
 
-        $scope.initNotes = () ->
+        $scope.allNotes = [ 'first', 'second', 'third' ]
+
+        $scope.initNotes = ( x, y ) ->
                 $scope.notes = {}
-                $scope.notes.positions = [30,30]
-                $scope.notes.opacity = 0
+                for z in $scope.allNotes
+                        $scope.notes[z] = {}
+                        offsetX = ( Math.random() > 0.5 ? -1 : 1 ) * 100
+                        offsetY = ( Math.random() > 0.5 ? -1 : 1 ) * 100
+                        $scope.notes[z].positions = [ x + offsetX - 50, y + offsetY - 50 ]
+                        $scope.notes[z].opacity = 0
 
         $scope.stop = () ->
                 $scope.player.pause()
 
-        $scope.enableNotes = () ->
-                $scope.initNotes()
-                $scope.notes.opacity = 1
+        $scope.enableNotes = ( $event ) ->
+                # get x and y
+                x = $event.pageX
+                y = $event.pageY
+                $scope.initNotes( x, y )
+                for x in $scope.allNotes
+                        $scope.notes[x].opacity = 1
                 $scope.animateNotes()
 
         $scope.animateNotes = () ->
-                if $scope.notes.opacity > 0
-                        console.log "Animating: #{$scope.notes.positions} vs #{$scope.notes.opacity}"
-                        $scope.notes.opacity -= 0.05
-                        $scope.notes.positions[0] += parseInt( Math.random() * 10 )
-                        $scope.notes.positions[1] += parseInt( Math.random() * 10 )
+                for x in $scope.allNotes
+                        if $scope.notes[x].opacity > 0
+                                $scope.notes[x].opacity -= 0.05
+                                $scope.notes[x].positions[0] += ( Math.random() > 0.5 ? -1 : 1 ) *
+                                        parseInt( Math.random() * 20 )
+                                $scope.notes[x].positions[1] += ( Math.random() > 0.5 ? -1 : 1 ) *
+                                        parseInt( Math.random() * 20 )
+                if $scope.notes.first.opacity > 0
                         $timeout ( () -> $scope.animateNotes() ), 200
                 else
-                        $scope.initNotes()
+                        $scope.initNotes( 0, 0 )
 
-
-        $scope.play = ( song ) ->
+        $scope.play = ( song, $event ) ->
                 d = new Date()
                 currentTime = d.getTime()
-
-                $scope.enableNotes()
-
                 console.log "Current: #{currentTime} vs last #{$scope.lastClicked}"
+                $scope.enableNotes( $event )
 
                 if currentTime < ( $scope.lastClicked + 2*1000 )
                         console.log "Ignoring it..."
